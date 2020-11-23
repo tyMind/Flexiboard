@@ -49,14 +49,11 @@ void LoginPage::on_pushButton_2_clicked()
     QString inputPassword=ui->lineEdit_2->text();
 
     while(qry.next()){
-        qDebug()<<"inside while";
         QString email=qry.value("email").toString();
         QString password=qry.value("password").toString();
-        qDebug()<<email<<" "<<password;
-
         if(email==inputEmail && password==inputPassword){
             qDebug()<<"successful login";
-            setLoginTrue();
+            MainWindow::setLoggedEmail(email);
             this->close();
             break;
         }
@@ -64,10 +61,3 @@ void LoginPage::on_pushButton_2_clicked()
 
 }
 
-void LoginPage::setLoginTrue(){
-    isLoggedIn=true;
-}
-
-bool LoginPage::getLogInStatus(){
-    return isLoggedIn;
-}

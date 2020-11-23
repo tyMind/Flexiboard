@@ -28,6 +28,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    static void setLoggedEmail(QString email);
+    static QString getLoggedEmail();
+
 private slots:
     void on_actionNew_triggered();
 
@@ -40,5 +43,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QWidget *nw;
+
+    static QString loggedEmail;
 };
+
+
 #endif // MAINWINDOW_H

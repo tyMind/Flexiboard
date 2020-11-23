@@ -9,18 +9,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     this->setWindowTitle("Flexiboard");
     setCentralWidget(ui->plainTextEdit);
-
-//    LoginPage *loginPage=new LoginPage(this);
-//    loginPage->setModal(true);
-//    loginPage->show();
-
-//    while(loginPage->getLogInStatus()==false){}
-//    qDebug()<<"pss: "<<loginPage->getLogInStatus();
-//    if(loginPage->getLogInStatus()==true){
-//        qDebug()<<"must close";
-//        loginPage->close();
-//    }
-//    loginPage->close();
 }
 
 MainWindow::~MainWindow()
@@ -81,44 +69,9 @@ void MainWindow::on_actionupdateRemote_triggered()
         QString password="Pos_20_db$";
         dbOps.setIdentity(db, dbName, hostName, username, password);
 
-//        bool ok=db.open();
-//        if(ok){
+        bool ok=db.open();
+        if(ok){
 //            QSqlQuery updOpenRem(db);
-//            QString updExecStat="UPDATE users SET openremote=0 WHERE id=1";
-//            if(updOpenRem.exec(updExecStat)){
-//                qDebug()<<"Update query has completed successfully";
-//            }
-//            else{
-//                qDebug()<<"there was an issue with the update query";
-//            }
-
-//            qDebug()<<"opened!!!!!!!";
-//            text=ui->plainTextEdit->toPlainText();
-//            QSqlQuery qry;
-//            QString prepInsStat="INSERT INTO users (first_name, last_name, text, remote_open) "
-//                                "VALUES (:first_name, :last_name, :text, :remote_open)";
-
-//            qry.prepare(prepInsStat);
-//            qry.bindValue(":first_name", "tyMind");
-//            qry.bindValue(":last_name", "Yeghiazaryan");
-//            qry.bindValue(":text", text);
-//            qry.bindValue(":remote_open", 0);
-//            if(qry.exec()){
-//                qDebug()<<"Insertion query executed successfully";
-//            }
-//            else{
-//                qDebug()<<"Insertion query was not successful";
-//            }
-//       }
-//       else{
-//            qDebug()<<"couldn't open";
-//       }
-//       db.close();
-//       qDebug()<<"Closing Database";
-
-                bool ok=db.open();
-                if(ok){
-                    QSqlQuery updOpenRem(db);
 //                    QString updExecStat="UPDATE users SET open_remote=0 WHERE id=1";
 //                    if(updOpenRem.exec(updExecStat)){
 //                        qDebug()<<"Update query has completed successfully";
@@ -127,31 +80,45 @@ void MainWindow::on_actionupdateRemote_triggered()
 //                        qDebug()<<"there was an issue with the update query";
 //                    }
 
-                    qDebug()<<"opened!!!!!!!";
-                    text=ui->plainTextEdit->toPlainText();
-                    QSqlQuery qry(db);
-                    QString prepInsStat="SELECT *FROM users_data";
-                    qry.prepare(prepInsStat);
+            qDebug()<<"opened!!!!!!!";
+            text=ui->plainTextEdit->toPlainText();
+            QSqlQuery qry(db);
+            QString prepInsStat="SELECT *FROM users_data";
+            qry.prepare(prepInsStat);
 
-                    qry.exec();
+            qry.exec();
 
-                    QString fetchedData="";
-                    qry.next();
-                    fetchedData=qry.value("email").toString();
-                    qDebug()<<fetchedData;
-//                    while(qry.next()){
-//                        fetchedData=qry.value("email").toString();
-//                        qDebug()<<fetchedData;
-//                    }
-                    ui->plainTextEdit->setPlainText(fetchedData);
+            QString fetchedEmail="";
+            QString fetchedText="";
+            QString userEmail=getLoggedEmail();
+            qDebug()<<"User email: "<<userEmail;
 
-               }
-               else{
-                    qDebug()<<"couldn't open";
-               }
-               db.close();
-               qDebug()<<"Closing Database";
+            while(qry.next()){
+                fetchedEmail=qry.value("email").toString();
+                if(fetchedEmail==userEmail){
+                    fetchedText=qry.value("text").toString();
+                }
+            }
+            ui->plainTextEdit->setPlainText(fetchedText);
+
+        }
+        else{
+            qDebug()<<"couldn't open";
+        }
+        db.close();
+        qDebug()<<"Closing Database";
 
 
     }
 }
+
+QString MainWindow::loggedEmail;
+
+QString MainWindow::getLoggedEmail(){
+    return loggedEmail;
+}
+
+void MainWindow::setLoggedEmail(QString email){
+    loggedEmail=email;
+}
+

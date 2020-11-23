@@ -13,8 +13,5 @@ int main(int argc, char *argv[])
     login.setModal(true);
     login.show();
 
-//    QWidget *wdg=new QWidget();
-//    wdg->show();
-
     return a.exec();
 }
