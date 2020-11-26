@@ -3,6 +3,7 @@
 
 #include <QSqlField>
 #include <QDebug>
+#include <QMessageBox>
 
 LoginPage::LoginPage(QWidget *parent) :
     QDialog(parent),
@@ -10,6 +11,7 @@ LoginPage::LoginPage(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("Login");
+    ui->lineEdit_2->setEchoMode(QLineEdit::Password);
 }
 
 LoginPage::~LoginPage()
@@ -20,7 +22,7 @@ LoginPage::~LoginPage()
 void LoginPage::on_pushButton_clicked()
 {
     //register button clicked
-    RegisterDialog *regDialog=new RegisterDialog();
+    RegisterDialog *regDialog=new RegisterDialog(this); //?this
     regDialog->setModal(true);
     regDialog->show();
 }
@@ -30,7 +32,9 @@ void LoginPage::on_pushButton_2_clicked()
     //login button clicked, must check if the data provided by user is invalid or not
 
     //register button in a sign up window
-    QSqlDatabase db=QSqlDatabase::addDatabase("QPSQL", "logCon");
+    QString dbDriverName="QPSQL";
+    QString dbConnectName="logCon";
+    QSqlDatabase db=QSqlDatabase::addDatabase(dbDriverName, dbConnectName);
     QString hostName="LOCALHOST";
     QString dbName="test";
     QString userName="postgres";
@@ -42,12 +46,14 @@ void LoginPage::on_pushButton_2_clicked()
     db.open();
 
     QSqlQuery qry(db);
-    qry.exec("SELECT *FROM users");
-    QSqlRecord rec=qry.record();
+    QString execCommand="SELECT *FROM users";
+    qry.exec(execCommand);
 
     QString inputEmail=ui->lineEdit->text();
     QString inputPassword=ui->lineEdit_2->text();
 
+    bool loggedIn=false;
+    //search in the db table
     while(qry.next()){
         QString email=qry.value("email").toString();
         QString password=qry.value("password").toString();
@@ -55,8 +61,12 @@ void LoginPage::on_pushButton_2_clicked()
             qDebug()<<"successful login";
             MainWindow::setLoggedEmail(email);
             this->close();
+            loggedIn=true;
             break;
         }
+    }
+    if(loggedIn==false){
+        QMessageBox::information(this, "Error on inputted fields", "You did not type correctly your email or password");
     }
 
 }

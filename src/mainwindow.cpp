@@ -2,6 +2,17 @@
 #include "ui_mainwindow.h"
 #include "loginpage.h"
 
+#include <QTextBlock>
+#include <QFileDialog>
+#include <QDebug>
+#include <QTextStream>
+
+#include <QtSql/QSqlDatabase>
+#include <QSqlQuery>
+#include <QDebug>
+#include <QSqlError>
+#include <QWindow>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -51,10 +62,10 @@ void MainWindow::on_actionSave_triggered()
 
 }
 
-void MainWindow::on_actionupdateRemote_triggered()
+void MainWindow::on_actionDownloadRemote_triggered()
 {
-    //creat another column for each user which will show the status
-    //of fileOpenRemote
+    //create another column for each user which will show the status
+    //of file(if it is open in remote device or not)
     bool fileOpenRemote=false;
     if(fileOpenRemote==true){
         qDebug()<<"Go and close the opened window on your another device";

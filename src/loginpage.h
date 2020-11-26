@@ -18,10 +18,6 @@ public:
     explicit LoginPage(QWidget *parent = nullptr);
     ~LoginPage();
 
-//    void setLoginTrue();
-//    bool getLogInStatus();
-//    QString getUserEmail();
-
 private slots:
     void on_pushButton_clicked();
 
@@ -29,8 +25,6 @@ private slots:
 
 private:
     Ui::LoginPage *ui;
-    bool isLoggedIn=false;
-//    QString userEmail;
 };
 
 #endif // LOGINPAGE_H

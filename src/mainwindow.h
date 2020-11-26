@@ -2,16 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QTextBlock>
-#include <QFileDialog>
-#include <QDebug>
-#include <QTextStream>
-
-#include <QtSql/QSqlDatabase>
-#include <QSqlQuery>
-#include <QDebug>
-#include <QSqlError>
-#include <QWindow>
 
 #include "databaseops.h"
 #include "loginpage.h"
@@ -38,12 +28,10 @@ private slots:
 
     void on_actionSave_triggered();
 
-    void on_actionupdateRemote_triggered();
+    void on_actionDownloadRemote_triggered();
 
 private:
     Ui::MainWindow *ui;
-    QWidget *nw;
-
     static QString loggedEmail;
 };
 
